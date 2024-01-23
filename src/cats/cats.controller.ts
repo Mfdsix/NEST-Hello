@@ -1,34 +1,58 @@
-import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpStatus,
+  Param,
+  Post,
+  Put,
+  Res,
+} from '@nestjs/common';
 import { CreateCatDto } from './create-cat.dto';
+import { Response } from 'express';
+
+const cats = [
+  {
+    id: 1,
+    name: 'My Cat',
+    age: 20,
+    breed: 'asian',
+  },
+];
 
 @Controller('cats')
 export class CatsController {
-    @Get()
-    findAll(): string {
-        return 'Test GET Cat';
-    }
+  @Get()
+  findAll(@Res() res: Response) {
+    res.json(cats);
+  }
 
-    @Get('async')
-    async findAllAsync(): Promise<string> {
-        return 'Test GET Cat using Async';
-    }
+  @Get('async')
+  async findAllAsync(@Res() res: Response) {
+    res.json(cats);
+  }
 
-    @Post()
-    @HttpCode(201)
-    create(@Body() body: CreateCatDto): string {
-        return 'Test POST Cat';
-    }
+  @Post()
+  create(@Body() body: CreateCatDto, @Res() res: Response) {
+    res.status(HttpStatus.CREATED).send();
+  }
 
-    @Get(':id')
-    findOne(@Param() params: any): string {
-        return 'Test GET Cat with ID ' + params.id;
-    }
+  @Get(':id')
+  findOne(@Param() params: any, @Res() res: Response) {
+    res.json({
+        ...cats[0],
+        id: params.id
+    })
+  }
 
-    @Put(':id')
-    @HttpCode(204)
-    update(@Param('id') id: string, @Body() body: CreateCatDto) {}
+  @Put(':id')
+  update(@Param('id') id: string, @Body() body: CreateCatDto, @Res() res: Response) {
+    res.status(HttpStatus.NO_CONTENT).send();
+  }
 
-    @Delete(':id')
-    @HttpCode(204)
-    delete(@Param('id') id: string) {}
+  @Delete(':id')
+  delete(@Param('id') id: string, @Res() res: Response) {
+    res.status(HttpStatus.NO_CONTENT).send();
+  }
 }
