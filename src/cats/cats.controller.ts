@@ -9,10 +9,10 @@ import {
   Put,
   Res,
 } from '@nestjs/common';
-import { CreateCatDto } from './create-cat.dto';
+import { CatDto } from './cat.dto';
 import { Response } from 'express';
 
-const cats = [
+const cats : CatDto[] = [
   {
     id: 1,
     name: 'My Cat',
@@ -24,30 +24,31 @@ const cats = [
 @Controller('cats')
 export class CatsController {
   @Get()
-  findAll(@Res() res: Response) {
-    res.json(cats);
+  findAll(): CatDto[] {
+    return cats
   }
 
   @Get('async')
-  async findAllAsync(@Res() res: Response) {
-    res.json(cats);
+  async findAllAsync(): Promise<CatDto[]> {
+    return cats;
   }
 
   @Post()
-  create(@Body() body: CreateCatDto, @Res() res: Response) {
-    res.status(HttpStatus.CREATED).send();
+  create(@Body() body: CatDto, @Res({ passthrough: true }) res: Response): string {
+    res.status(HttpStatus.CREATED);
+    return "success";
   }
 
   @Get(':id')
-  findOne(@Param() params: any, @Res() res: Response) {
-    res.json({
+  findOne(@Param() params: any): CatDto {
+    return {
         ...cats[0],
         id: params.id
-    })
+    };
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() body: CreateCatDto, @Res() res: Response) {
+  update(@Param('id') id: string, @Body() body: CatDto, @Res() res: Response) {
     res.status(HttpStatus.NO_CONTENT).send();
   }
 
