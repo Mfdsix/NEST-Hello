@@ -10,7 +10,7 @@ import {
   Query,
   Res,
 } from '@nestjs/common';
-import { CatDto } from './cat.dto';
+import { CatDto, CreateCatDto } from './cat.dto';
 import { Response } from 'express';
 import { FilterCatDto } from './filter-cat.dto';
 
@@ -36,7 +36,7 @@ export class CatsController {
   }
 
   @Post()
-  create(@Body() body: CatDto, @Res({ passthrough: true }) res: Response): string {
+  create(@Body() body: CreateCatDto, @Res({ passthrough: true }) res: Response): string {
     res.status(HttpStatus.CREATED);
     return "success";
   }
@@ -50,7 +50,7 @@ export class CatsController {
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() body: CatDto, @Res() res: Response) {
+  update(@Param('id') id: string, @Body() body: CreateCatDto, @Res() res: Response) {
     res.status(HttpStatus.NO_CONTENT).send();
   }
 
