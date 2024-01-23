@@ -7,10 +7,12 @@ import {
   Param,
   Post,
   Put,
+  Query,
   Res,
 } from '@nestjs/common';
 import { CatDto } from './cat.dto';
 import { Response } from 'express';
+import { FilterCatDto } from './filter-cat.dto';
 
 const cats : CatDto[] = [
   {
@@ -24,7 +26,7 @@ const cats : CatDto[] = [
 @Controller('cats')
 export class CatsController {
   @Get()
-  findAll(): CatDto[] {
+  findAll(@Query() query: FilterCatDto): CatDto[] {
     return cats
   }
 
