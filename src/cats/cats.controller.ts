@@ -10,7 +10,7 @@ import {
   Query,
   Res,
 } from '@nestjs/common';
-import { CreateCatDto } from './create-cat.dto';
+import { CreateCatDto } from './dto/create-cat.dto';
 import { Response } from 'express';
 import { FilterCatDto } from './filter-cat.dto';
 import { CatsService } from './cats.service';
