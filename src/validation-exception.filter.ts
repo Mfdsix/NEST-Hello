@@ -7,6 +7,12 @@ export class ValidationExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const responseBody = exception.getResponse();
+    const status = exception.getStatus();
+
+    if(status !== 400) return response.status(status).json({
+      message: responseBody,
+      statusCode: status
+    });
 
     response
       .status(HttpStatus.UNPROCESSABLE_ENTITY)

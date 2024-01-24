@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Cat } from './interfaces/cat.interface';
+import { NotFoundException } from 'src/not-found-exception.filter';
 
 @Injectable()
 export class CatsService {
@@ -10,7 +11,10 @@ export class CatsService {
     }
 
     findOne(id: string): Cat {
-        return this.cats.find((cat) => cat.id == id);
+        const cat = this.cats.find((cat) => cat.id == id);
+        if(!cat) throw new NotFoundException();
+
+        return cat;
     }
 
     create(cat: Cat){
@@ -22,6 +26,8 @@ export class CatsService {
 
     update(id: string, cat: Cat){
         const selectedIndex = this.cats.findIndex((cat) => cat.id == id)
+        if(selectedIndex == -1) throw new NotFoundException();
+
         this.cats[selectedIndex] = {
             ...this.cats[selectedIndex],
             ...cat
@@ -30,6 +36,8 @@ export class CatsService {
 
     delete(id: string){
         const selectedIndex = this.cats.findIndex((cat) => cat.id == id)
+        if(selectedIndex == -1) throw new NotFoundException();
+
         this.cats.splice(selectedIndex, 1);
     }
 }

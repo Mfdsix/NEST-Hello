@@ -17,6 +17,7 @@ import { FilterCatDto } from './filter-cat.dto';
 import { CatsService } from './cats.service';
 import { Cat } from './interfaces/cat.interface';
 import { ValidationExceptionFilter } from 'src/validation-exception.filter';
+import { NotFoundException } from 'src/not-found-exception.filter';
 
 @Controller('cats')
 export class CatsController {
