@@ -1,30 +1,30 @@
 import { Injectable } from '@nestjs/common';
-import { Cat } from './interfaces/cat.interface';
+import { CatDto } from './dto/cat.dto';
 import { NotFoundException } from 'src/not-found-exception.filter';
 
 @Injectable()
 export class CatsService {
-    private readonly cats: Cat[] = [];
+    private readonly cats: CatDto[] = [];
 
-    findAll(): Cat[] {
+    findAll(): CatDto[] {
         return this.cats;
     }
 
-    findOne(id: string): Cat {
+    findOne(id: string): CatDto {
         const cat = this.cats.find((cat) => cat.id == id);
         if(!cat) throw new NotFoundException();
 
         return cat;
     }
 
-    create(cat: Cat){
+    create(cat: CatDto){
         this.cats.push({
             ...cat,
             id: new Date().getTime()
         });
     }
 
-    update(id: string, cat: Cat){
+    update(id: string, cat: CatDto){
         const selectedIndex = this.cats.findIndex((cat) => cat.id == id)
         if(selectedIndex == -1) throw new NotFoundException();
 
